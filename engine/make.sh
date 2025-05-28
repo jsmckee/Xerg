@@ -1,0 +1,1 @@
+wasm-pack build --target web --out-dir ../portal/src/assets/wasm
