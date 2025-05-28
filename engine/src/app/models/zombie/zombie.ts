@@ -1,16 +1,16 @@
 import { ThreeModel } from "../three-model";
 import * as THREE from 'three';
 import { IZombie } from "../izombie";
+import { GLTFLoader, GLTF } from 'three/examples/jsm/loaders/GLTFLoader';
 
 export class Zombie extends ThreeModel implements IZombie {
-    public JSONLoader: any;
-    public model: any;
+    public model!: THREE.Object3D;
     public baseHealth: number;
     public remainingHealth: number;
     public dieAudio: any;
     public dead: boolean;
 
-    constructor(offset: number, callback: (r) => void) {
+    constructor(offset: number, callback: (r: any) => void) {
         super();
         this.baseHealth = 15;
         this.dead = true;
@@ -18,16 +18,17 @@ export class Zombie extends ThreeModel implements IZombie {
         const cb = callback;
         const offSet = offset;
         const t = this;
-        this.JSONLoader = new THREE.JSONLoader();
-        this.JSONLoader.load('./assets/zombie.model.json', (g, m) => {
-            t.model = new THREE.Mesh(g, m);
-            t.model.scale.set(.5, .5, .5);
+
+        // Use GLTFLoader for .glb files
+        const loader = new GLTFLoader();
+        loader.load('assets/crate.glb', (gltf: GLTF) => {
+            t.model = gltf.scene;
+            t.model.scale.set(0.5, 0.5, 0.5);
             t.model.rotation.y = 9.4;
             t.model.position.x = offSet;
             t.model.position.z = -20;
             cb(t.model);
         });
-
 
         this.dieAudio = new Audio();
         this.dieAudio.src = "../../assets/explosion.mp3";
