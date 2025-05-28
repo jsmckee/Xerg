@@ -1,2 +1,5 @@
-<app-tab-option [id]="'home'"></app-tab-option>
-<app-tab-option [id]="'tanks'"></app-tab-option>
+<mat-tab-group (selectedIndexChange)="onTabChange($event)">
+  <mat-tab label="Home"></mat-tab>
+  <mat-tab label="Tanks"></mat-tab>
+  <mat-tab label="Grid"></mat-tab>
+</mat-tab-group>

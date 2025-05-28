@@ -1,6 +1,7 @@
 import { IWeapon } from "../iweapon";
 import { ThreeModel } from "../three-model";
 import * as THREE from 'three';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 
 export class Cannon extends ThreeModel implements IWeapon {
     public model!: THREE.Object3D;
@@ -15,10 +16,10 @@ export class Cannon extends ThreeModel implements IWeapon {
         this.damage = 5;
         const cb = callback;
         const t = this;
-        // Use ObjectLoader instead of deprecated JSONLoader
-        const loader = new THREE.ObjectLoader();
-        loader.load('assets/cannon.model.json', (obj: THREE.Object3D) => {
-            t.model = obj;
+        // Use GLTFLoader for .glb files
+        const loader = new GLTFLoader();
+        loader.load('assets/crate.glb', (gltf: any) => {
+            t.model = gltf.scene;
             t.model.scale.set(0.5, 0.5, 0.5);
             t.model.rotation.y = 9.4;
             t.model.position.x = 5.5;
@@ -50,9 +51,7 @@ export class Cannon extends ThreeModel implements IWeapon {
         var targetPoint = fullRange * mousePercentage;
 
         if (this.model) {
-
             this.model.rotation.y = leftSide - targetPoint;
-
         }
     }
 

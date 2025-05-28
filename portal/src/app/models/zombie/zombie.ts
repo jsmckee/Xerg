@@ -1,6 +1,7 @@
 import { ThreeModel } from "../three-model";
 import * as THREE from 'three';
 import { IZombie } from "../izombie";
+import { GLTFLoader, GLTF } from 'three/examples/jsm/loaders/GLTFLoader.js';
 
 export class Zombie extends ThreeModel implements IZombie {
     public model!: THREE.Object3D;
@@ -18,10 +19,10 @@ export class Zombie extends ThreeModel implements IZombie {
         const offSet = offset;
         const t = this;
 
-        // Use ObjectLoader instead of deprecated JSONLoader
-        const loader = new THREE.ObjectLoader();
-        loader.load('./assets/zombie.model.json', (obj: THREE.Object3D) => {
-            t.model = obj;
+        // Use GLTFLoader for .glb files
+        const loader = new GLTFLoader();
+        loader.load('assets/crate.glb', (gltf: GLTF) => {
+            t.model = gltf.scene;
             t.model.scale.set(0.5, 0.5, 0.5);
             t.model.rotation.y = 9.4;
             t.model.position.x = offSet;
@@ -48,7 +49,7 @@ export class Zombie extends ThreeModel implements IZombie {
 
     TakeDamage(amount: number): Boolean {
         this.remainingHealth -= amount;
-
+        console.log(`Zombie took ${amount} damage, remaining health: ${this.remainingHealth}`);
         return this.remainingHealth > 0;
     }
 

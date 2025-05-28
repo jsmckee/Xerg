@@ -1,0 +1,14 @@
+// Style the component's host element to allow the canvas to fill it
+:host
+  display: block // Important: makes the host element a block container
+  width: 100%
+  height: 100%
+  overflow: hidden // Prevent scrollbars if content slightly exceeds bounds
+
+// Style the canvas element to fill its parent container
+.full-page-canvas
+  display: block // Important: removes extra space below the canvas
+  width: 100%
+  height: 100%
+  // The border style is already in the HTML, but you could move it here
+  // border: 1px solid #ccc

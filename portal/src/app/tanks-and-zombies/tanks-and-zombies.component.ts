@@ -62,8 +62,8 @@ export class TanksAndZombiesComponent {
           z.MoveForward();
         }
         t.GameEngineRenderer.render(t.scene, t.camera);
-      }, 100);
-    }, 100);
+      }, 10);
+    }, 10);
 
     this.Restart();
   }
@@ -96,10 +96,10 @@ AddZombieToScene(offset: number) {
 }
 
 MouseClicked(e: any) {
-  if (this.playAudio) {
-
+  // console.log("Mouse clicked", e);
+  if (this.playAudio) 
     (<IWeapon>this.player).PlayAttack();
-  }
+  
   // Use normalized device coordinates for mouse
   this.mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
   this.mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
@@ -108,23 +108,27 @@ MouseClicked(e: any) {
 
   let zs = [];
   for (const z of this.Zombies) {
+    // console.log(z.model);
     zs.push(z.model);
   }
   var intersects = this.raycaster.intersectObjects(zs);
-  if (intersects.length) {
-    console.log(intersects);
-  } else {
-    console.log(intersects);
-  }
+  console.log(intersects);
+  // if (intersects.length) {
+  //   console.log(intersects);
+  // } else {
+  //   console.log(intersects);
+  // }
   let deadZombie = false;
   for (const i of intersects) {
-
+    console.log("Intersected with: ", i.object.uuid);
     let index = 0;
     for (const z of this.Zombies) {
+      console
       if (z.model.uuid == i.object.uuid) {
         const damage = (<IWeapon>this.player).damage;
 
         const stillAlive = (<IZombie>z).TakeDamage(damage);
+        console.log(`Zombie health after hit: ${(<IZombie>z).GetHealth()}`);
         (<IWeapon>this.player).PlayHit();
         if (!stillAlive) {
           this.scene.remove(i.object);
